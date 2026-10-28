@@ -1,0 +1,15 @@
+$ yes > /dev/null & yes > /dev/null &   # both CPUs busy
+$ hyperfine --runs 12 'sort -n numbers.txt'   # under load
+Benchmark 1: sort -n numbers.txt (12 runs)
+                mean     ±       σ          min     …     max
+  Wall Time    256.3 ms  ±    32.9 ms     221.0 ms  …   346.1 ms
+  Memory        16.6 MiB ±     0.0 MiB     16.5 MiB …    16.6 MiB
+ 
+
+$ kill %1 %2   # load off
+$ hyperfine --runs 12 'sort -n numbers.txt'   # quiet machine
+Benchmark 1: sort -n numbers.txt (12 runs)
+                mean     ±       σ          min     …     max
+  Wall Time    108.6 ms  ±     8.6 ms     100.3 ms  …   133.4 ms
+  Memory        16.6 MiB ±     0.1 MiB     16.5 MiB …    16.8 MiB
+ 

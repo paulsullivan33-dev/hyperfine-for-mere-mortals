@@ -1,0 +1,23 @@
+$ hyperfine -S --parameter-scan lines 50000 200000 -D 50000 'head -n {lines} numbers.txt | sort -n'
+Benchmark 1: head -n 50000 numbers.txt | sort -n (78 runs)
+                mean     ±       σ          min     …     max
+  Wall Time     35.6 ms  ±     9.2 ms      30.2 ms  …   102.4 ms
+  Memory         5.5 MiB ±     0.0 MiB      5.4 MiB …     5.6 MiB
+ 
+Benchmark 2: head -n 100000 numbers.txt | sort -n (43 runs)
+                mean     ±       σ          min     …     max
+  Wall Time     76.7 ms  ±    18.3 ms      63.0 ms  …   168.0 ms          +115.6%  (2.2x slower)
+  Memory         8.1 MiB ±     0.1 MiB      7.9 MiB …     8.2 MiB          +47.3%  (1.5x more)
+ 
+Benchmark 3: head -n 150000 numbers.txt | sort -n (18 runs)
+                mean     ±       σ          min     …     max
+  Wall Time    114.2 ms  ±    17.6 ms     102.6 ms  …   161.7 ms          +221.1%  (3.2x slower)
+  Memory         9.3 MiB ±     0.1 MiB      9.2 MiB …     9.5 MiB          +69.0%  (1.7x more)
+ 
+  Warning: The first benchmarking run for this command was significantly slower than the rest (161.7 ms). This could be caused by (filesystem) caches that were not filled until after the first run. You should consider using the '--warmup' option to fill those caches before the actual benchmark. Alternatively, use the '--prepare' option to clear the caches before each timing run.
+ 
+Benchmark 4: head -n 200000 numbers.txt | sort -n (21 runs)
+                mean     ±       σ          min     …     max
+  Wall Time    162.2 ms  ±    27.6 ms     136.7 ms  …   237.2 ms          +355.8%  (4.6x slower)
+  Memory         9.3 MiB ±     0.1 MiB      9.2 MiB …     9.5 MiB          +69.4%  (1.7x more)
+ 

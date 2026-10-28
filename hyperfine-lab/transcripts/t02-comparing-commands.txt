@@ -1,0 +1,18 @@
+$ hyperfine -S --warmup 2 -n grep -n awk -n python3 'grep -c ERROR log.txt' "awk '/ERROR/ {n++} END {print n}' log.txt" 'python3 count_errors.py log.txt'
+Benchmark 1: grep (1163 runs)
+                mean     ±       σ          min     …     max
+  Wall Time      1.6 ms  ±     1.5 ms       0.7 ms  …    27.1 ms
+  Memory         3.6 MiB ±     0.1 MiB      3.3 MiB …     3.8 MiB
+ 
+  Warning: Command took less than 5 ms to complete. Note that the wall-clock measurements might be inaccurate because hyperfine can not calibrate the shell startup time much more precise than this limit. You can try to use the `-N`/`--shell=none` option to disable the shell completely.
+ 
+Benchmark 2: awk (201 runs)
+                mean     ±       σ          min     …     max
+  Wall Time     12.9 ms  ±     1.7 ms      10.8 ms  …    25.9 ms          +714.7%  (8.1x slower)
+  Memory         3.8 MiB ±     0.1 MiB      3.8 MiB …     4.0 MiB           +5.7%
+ 
+Benchmark 3: python3 (89 runs)
+                mean     ±       σ          min     …     max
+  Wall Time     41.3 ms  ±    24.6 ms      30.9 ms  …   198.9 ms         +2519.0%  (26.2x slower)
+  Memory        10.1 MiB ±     0.1 MiB      9.8 MiB …    10.2 MiB         +178.6%  (2.8x more)
+ 

@@ -1,0 +1,6 @@
+$ grep -c ERROR log.txt
+2471
+$ awk '/ERROR/ {n++} END {print n}' log.txt
+2471
+$ python3 count_errors.py log.txt
+2471

@@ -1,0 +1,29 @@
+site_name: Hyperfine for Mere Mortals
+site_description: A stopwatch for the command line that runs a command many times and reports honest statistics. Comparing two ways of doing the same job, sweeping a parameter across values, exporting the numbers, and learning when a benchmark is lying to you.
+site_url: https://paulsullivan33-dev.github.io/hyperfine-for-mere-mortals/
+copyright: 'Part of <a href="https://paulsullivan33-dev.github.io/mere-mortals/">For Mere Mortals</a> · Text <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, code MIT'
+
+# Guides live at the repo root (nice for GitHub browsing).
+# The deploy workflow copies them into docs/ before building.
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - What Hyperfine Is: what-hyperfine-is.md
+  - The Moving Parts: the-moving-parts.md
+  - Installing Hyperfine: installing-hyperfine.md
+  - Your First Benchmark: your-first-benchmark.md
+  - Reading the Results: reading-the-results.md
+  - Comparing Commands: comparing-commands.md
+  - Warmups, Runs and Preparation: warmups-runs-and-preparation.md
+  - Shells, and What Gets Timed: shells-and-what-gets-timed.md
+  - Parameters — Lists and Scans: parameters.md
+  - Choosing What to Measure: metrics.md
+  - Exports: exports.md
+  - Recipes: recipes.md
+  - The Neighbours: the-neighbours.md
+  - Limits: limits.md
+  - Troubleshooting: troubleshooting.md
+  - Glossary: glossary.md
+  - Writing Criteria: criteria.md

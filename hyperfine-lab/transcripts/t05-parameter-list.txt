@@ -1,0 +1,18 @@
+$ hyperfine -L level 1,6,9 'gzip -c -{level} article.txt'
+Benchmark 1: gzip -c -1 article.txt (40 runs)
+                mean     ±       σ          min     …     max
+  Wall Time     44.4 ms  ±     5.3 ms      41.7 ms  …    75.0 ms
+  Memory         3.2 MiB ±     0.0 MiB      3.2 MiB …     3.2 MiB
+ 
+  Warning: The first benchmarking run for this command was significantly slower than the rest (75.0 ms). This could be caused by (filesystem) caches that were not filled until after the first run. You should consider using the '--warmup' option to fill those caches before the actual benchmark. Alternatively, use the '--prepare' option to clear the caches before each timing run.
+ 
+Benchmark 2: gzip -c -6 article.txt (52 runs)
+                mean     ±       σ          min     …     max
+  Wall Time     72.5 ms  ±    28.5 ms      56.5 ms  …   189.8 ms           +63.4%  (1.6x slower)
+  Memory         3.4 MiB ±     0.0 MiB      3.4 MiB …     3.5 MiB           +4.2%
+ 
+Benchmark 3: gzip -c -9 article.txt (34 runs)
+                mean     ±       σ          min     …     max
+  Wall Time     67.8 ms  ±    10.5 ms      60.0 ms  …    96.9 ms           +52.9%  (1.5x slower)
+  Memory         3.5 MiB ±     0.0 MiB      3.5 MiB …     3.5 MiB           +7.7%
+ 

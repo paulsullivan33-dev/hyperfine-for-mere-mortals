@@ -1,0 +1,113 @@
+The lab — one real binary, one noisy machine, no borrowed numbers
+====================================================================
+
+The lab is hyperfine as its project ships
+it: the official release binary for
+x86_64 Linux, unpacked into a scratch
+folder on the build machine (an Ubuntu
+24.04 sandbox, 2 CPUs, 7.7 GB RAM):
+
+  * hyperfine 2.0.0, from the
+    hyperfine-v2.0.0-x86_64-unknown-linux-gnu
+    release tarball. Nothing installed
+    system-wide.
+  * Fixtures generated deterministically
+    by hyperfine-lab/make_fixtures.py
+    (fixed seeds, so the reader's files
+    match the lab's): log.txt, 50,000
+    invented log lines, 2,471 of them
+    ERROR; numbers.txt, 200,000 shuffled
+    integers; article.txt, 8 MB of
+    invented prose, and article.txt.gz.
+  * The third contestant in chapter 6 is
+    hyperfine-lab/count_errors.py; the
+    JSON reader in chapter 11 is
+    hyperfine-lab/readback.py.
+  * Every benchmark measured the lab's
+    own commands on the lab's own
+    machine. Nothing was timed on, or
+    aimed at, anyone else's system.
+
+What the lab ran, in
+hyperfine-lab/transcripts/:
+
+  * t00 the version printout (2.0.0).
+  * t01 sleep 0.2: 14 runs, 201.7 ms
+    mean, σ 0.2 ms — the instrument
+    checked against a known answer.
+  * t02a the same-answer proof: grep,
+    awk and Python all print 2471.
+  * t02 the race (-S, --warmup 2, -n):
+    grep 1.8 ms (1,523 runs, and the
+    under-5-ms shell-calibration
+    warning), awk 22.6 ms (12.2x slower,
+    σ nearly its own mean), python3
+    34.5 ms (18.7x slower, 2.8x memory).
+  * t03 sort: automatic run count (15,
+    273.0 ± 103.2 ms), then --warmup 2
+    --runs 20 (242.7 ± 74.5 ms).
+  * t04 sleep 0.05 three ways: no shell
+    52.8 ms, -S 54.3 ms, bash --norc
+    52.0 ms.
+  * t05 -L over gzip levels 1/6/9
+    (44.4 / 72.5 / 67.8 ms) — with the
+    first-run-slower warning on level 1
+    and the outlier (189.8 ms max) that
+    bent level 6's mean above level 9's.
+  * t06 --parameter-scan, sort at
+    50k/100k/150k/200k lines:
+    35.6 / 76.7 / 114.2 / 162.2 ms;
+    memory 5.5 -> 9.3 MiB.
+  * t07 --prepare restoring work.gz
+    before each run, --cleanup removing
+    it (proven by the failed ls inside
+    the transcript), and the first-run
+    warning in its "you are already
+    using --prepare" form.
+  * t08 exports (Markdown, CSV, JSON)
+    of the grep/awk pair, all read back;
+    the JSON read by readback.py: grep
+    mean 1.70 ms, median 0.70 ms.
+  * t09 the load experiment: two yes
+    processes on both CPUs, sort at
+    256.3 ± 32.9 ms; load killed, same
+    command at 108.6 ± 8.6 ms.
+  * t10 --metrics time on sort (wall
+    132.8, CPU 161.7, user 150.3,
+    system 11.4 ms) and the hardware
+    counters' refusal, verbatim, exit 1.
+  * t90 the exit-code trap: grep finding
+    nothing exits 1 and hyperfine
+    refuses; -i accepts it with its
+    warning.
+
+The sandbox's character, discovered by
+running into it:
+
+  * The machine is shared, and it is
+    NOISY. The same sort reads 273 ms in
+    t03, 133 ms in t10 and 109 ms in
+    t09's quiet half. The guide keeps
+    those numbers as they fell and uses
+    them in chapter 14: comparisons are
+    only drawn within one transcript,
+    back-to-back, and the scatter is
+    treated as data, not embarrassment.
+  * Hardware performance counters are
+    withheld (t10). Chapter 10 describes
+    the counters from the documentation
+    and prints the refusal instead of a
+    result.
+  * The lab had no use for administrator
+    rights, so the cache-dropping form
+    of --prepare is documented-only;
+    the file-restoring form was run.
+
+Documented only (not run): the hardware
+counters; cache-dropping prepares;
+--setup and --conclude; multi--L grids;
+AsciiDoc and org-mode exports; install
+routes besides the release tarball;
+Windows and macOS behaviour; and the
+neighbouring tools of chapter 13, which
+are characterised, not benchmarked.

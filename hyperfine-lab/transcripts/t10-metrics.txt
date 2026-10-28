@@ -1,0 +1,12 @@
+$ hyperfine --metrics time --runs 10 'sort -n numbers.txt'
+Benchmark 1: sort -n numbers.txt (10 runs)
+                  mean     ±       σ          min     …     max
+  Wall Time      132.8 ms  ±    24.0 ms     109.5 ms  …   183.2 ms
+  CPU time       161.7 ms  ±    15.7 ms     140.7 ms  …   197.1 ms
+  User time      150.3 ms  ±    16.0 ms     133.3 ms  …   190.6 ms
+  System time     11.4 ms  ±     4.4 ms       6.6 ms  …    18.6 ms
+ 
+
+$ hyperfine --metrics instructions,cpu_cycles --runs 5 'sort -n numbers.txt'
+Error: Metric 'instructions' is unavailable for 'sort -n numbers.txt'. Check platform support and hardware-counter permissions.
+exit code: 1

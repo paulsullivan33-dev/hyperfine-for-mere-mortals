@@ -1,0 +1,96 @@
+hyperfine — the distilled commands
+====================================================================
+Placeholders: <cmd> is a command of yours;
+{level} and {lines} are parameter names
+the command itself defines.
+
+FIRST CONTACT (chapters 3-4)
+--------------------------------------------------------------------
+  hyperfine --version
+  hyperfine 'sleep 0.2'            # a command whose answer
+                                   # you already know
+  hyperfine '<cmd>'                # always quote: the command
+                                   # is one argument
+
+READING A RESULT (chapter 5)
+--------------------------------------------------------------------
+  mean ± σ     typical run, and how much runs disagreed
+  min … max    fastest and slowest single runs
+  (N runs)     how much evidence the table rests on
+  +X% (Nx)     later commands are priced against the FIRST
+
+COMPARING (chapter 6)
+--------------------------------------------------------------------
+  # first prove the contestants agree on the answer:
+  grep -c ERROR log.txt; awk '...' log.txt; python3 count.py log.txt
+  hyperfine -S --warmup 2 -n grep -n awk -n python3 \
+    'grep -c ERROR log.txt' "awk '...' log.txt" 'python3 count.py log.txt'
+                                   # -S: a shell (quoting, pipes)
+                                   # -n: a name per command
+
+RUNS AND STATE (chapter 7)
+--------------------------------------------------------------------
+  hyperfine --warmup 3 '<cmd>'     # untimed runs first: warm
+  hyperfine --runs 20 '<cmd>'      # exactly 20 (also
+                                   # --min-runs/--max-runs)
+  hyperfine --prepare 'cp pristine.gz work.gz' \
+            --cleanup 'rm -f work.gz' 'gzip -dc work.gz'
+                                   # prepare: before EVERY run
+                                   # cleanup: once, at the end
+  # the other slots: --setup (once, before the run set),
+  # --conclude (after every run, e.g. stop a started server)
+
+SHELLS (chapter 8)
+--------------------------------------------------------------------
+  hyperfine '<cmd>'                # version 2 default: NO
+                                   # shell — direct execution
+  hyperfine -N '<cmd>'             # the same, spelled out
+  hyperfine -S 'a | b > c'         # platform shell (sh/cmd):
+                                   # pipes and redirection work
+  hyperfine --shell 'bash --norc' '<cmd>'
+                                   # any shell, with flags
+  hyperfine --output pipe '<cmd>'  # output via a pipe, not
+                                   # /dev/null; also <file>,
+                                   # inherit; --show-output
+                                   # shows it (debugging only)
+
+PARAMETERS (chapter 9)
+--------------------------------------------------------------------
+  hyperfine -L level 1,6,9 'gzip -c -{level} article.txt'
+                                   # a list of values
+  hyperfine -S --parameter-scan lines 50000 200000 -D 50000 \
+    'head -n {lines} numbers.txt | sort -n'
+                                   # a generated range; -D is
+                                   # the step; decimals allowed
+  # -L twice = every combination (a grid)
+
+METRICS (chapter 10)
+--------------------------------------------------------------------
+  hyperfine '<cmd>'                # default preset: wall
+                                   # time + peak memory
+  hyperfine --metrics time '<cmd>' # + CPU, user, system time
+  hyperfine --metrics instructions,cpu_cycles '<cmd>'
+                                   # hardware counters, where
+                                   # the OS permits (ours didn't)
+
+EXPORTS (chapter 11)
+--------------------------------------------------------------------
+  hyperfine --export-markdown bench.md \
+            --export-json bench.json \
+            --export-csv bench.csv '<cmd>' '<cmd2>'
+                                   # md: the report table
+                                   # csv: summaries + medians,
+                                   # base units (s, B)
+                                   # json: every single run,
+                                   # every metric, exit codes
+  python3 readback.py              # the lab's JSON reader
+                                   # (hyperfine-lab/readback.py)
+
+FAILURES (chapter 15)
+--------------------------------------------------------------------
+  hyperfine -i 'grep -c ABSENT log.txt'
+                                   # exit 1 is grep's "none
+                                   # found": -i accepts it, and
+                                   # prints a warning saying so
+  hyperfine --show-output '<cmd>'  # see what a failing
+                                   # command actually said

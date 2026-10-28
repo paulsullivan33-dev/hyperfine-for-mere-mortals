@@ -1,0 +1,13 @@
+$ hyperfine 'sort -n numbers.txt'
+Benchmark 1: sort -n numbers.txt (15 runs)
+                mean     ±       σ          min     …     max
+  Wall Time    273.0 ms  ±   103.2 ms     155.9 ms  …   490.9 ms
+  Memory        16.6 MiB ±     0.1 MiB     16.4 MiB …    16.7 MiB
+ 
+
+$ hyperfine --warmup 2 --runs 20 'sort -n numbers.txt'
+Benchmark 1: sort -n numbers.txt (20 runs)
+                mean     ±       σ          min     …     max
+  Wall Time    242.7 ms  ±    74.5 ms     143.1 ms  …   379.1 ms
+  Memory        16.6 MiB ±     0.1 MiB     16.4 MiB …    16.8 MiB
+ 

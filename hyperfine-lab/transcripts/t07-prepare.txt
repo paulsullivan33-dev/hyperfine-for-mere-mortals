@@ -1,0 +1,11 @@
+$ hyperfine --prepare 'cp article.txt.gz work.gz' --cleanup 'rm -f work.gz' 'gzip -dc work.gz'
+Benchmark 1: gzip -dc work.gz (28 runs)
+                mean     ±       σ          min     …     max
+  Wall Time     46.1 ms  ±    13.8 ms      37.6 ms  …    93.2 ms
+  Memory         3.1 MiB ±     0.0 MiB      3.1 MiB …     3.1 MiB
+ 
+  Warning: The first benchmarking run for this command was significantly slower than the rest (93.2 ms). This could be caused by (filesystem) caches that were not filled until after the first run. You are already using the '--prepare' option which can be used to clear caches. If you did not use a cache-clearing command with '--prepare', you can either try that or consider using the '--warmup' option to fill those caches before the actual benchmark.
+ 
+
+$ ls work.gz
+ls: cannot access 'work.gz': No such file or directory

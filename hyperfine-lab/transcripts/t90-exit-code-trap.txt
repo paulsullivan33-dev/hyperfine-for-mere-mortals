@@ -1,0 +1,12 @@
+$ hyperfine 'grep -c NOSUCHLEVEL log.txt'
+Error: Command 'grep -c NOSUCHLEVEL log.txt' terminated with non-zero exit code 1 in the first benchmark run. Use the '-i'/'--ignore-failure' option if you want to ignore this. Alternatively, use the '--show-output' option to debug what went wrong.
+exit code: 1
+
+$ hyperfine -i 'grep -c NOSUCHLEVEL log.txt'
+Benchmark 1: grep -c NOSUCHLEVEL log.txt (142 runs)
+                mean     ±       σ          min     …     max
+  Wall Time      6.1 ms  ±     4.6 ms       1.4 ms  …    21.8 ms
+  Memory         3.2 MiB ±     0.1 MiB      3.2 MiB …     3.3 MiB
+ 
+  Warning: Ignoring non-zero exit code.
+ 

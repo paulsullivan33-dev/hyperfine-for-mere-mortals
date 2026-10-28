@@ -1,0 +1,30 @@
+$ hyperfine -S --warmup 2 -n grep -n awk --export-markdown bench.md --export-json bench.json --export-csv bench.csv 'grep -c ERROR log.txt' "awk '/ERROR/ {n++} END {print n}' log.txt"
+Benchmark 1: grep (574 runs)
+                mean     ±       σ          min     …     max
+  Wall Time      1.7 ms  ±     3.4 ms       0.5 ms  …    25.7 ms
+  Memory         3.6 MiB ±     0.1 MiB      3.5 MiB …     3.6 MiB
+ 
+  Warning: Command took less than 5 ms to complete. Note that the wall-clock measurements might be inaccurate because hyperfine can not calibrate the shell startup time much more precise than this limit. You can try to use the `-N`/`--shell=none` option to disable the shell completely.
+  Warning: The first benchmarking run for this command was significantly slower than the rest (3.9 ms). This could be caused by (filesystem) caches that were not filled until after the first run. You are already using the '--warmup' option which helps to fill these caches before the actual benchmark. You can either try to increase the warmup count further or re-run this benchmark on a quiet system in case it was a random outlier. Alternatively, consider using the '--prepare' option to clear the caches before each timing run.
+ 
+Benchmark 2: awk (150 runs)
+                mean     ±       σ          min     …     max
+  Wall Time     17.8 ms  ±     9.3 ms      10.4 ms  …    54.2 ms          +946.9%  (10.5x slower)
+  Memory         3.9 MiB ±     0.0 MiB      3.9 MiB …     4.0 MiB           +8.6%
+ 
+
+$ cat bench.md
+| Command | Mean Wall Time [ms] | Change | Factor |
+|:---|---:|---:|:---|
+| `grep` | 1.7 ± 3.4 |  |  |
+| `awk` | 17.8 ± 9.3 | +946.9% | (10.5x slower) |
+
+$ cat bench.csv
+command,time_wall_clock_unit,time_wall_clock_mean,time_wall_clock_stddev,time_wall_clock_median,time_wall_clock_min,time_wall_clock_max,memory_peak_resident_unit,memory_peak_resident_mean,memory_peak_resident_stddev,memory_peak_resident_median,memory_peak_resident_min,memory_peak_resident_max
+grep,s,0.0016970516290592357,0.0033922111163101508,0.0007017984200000003,0.0005364664200000003,0.025731667420000003,B,3744314.871080139,56471.61052056282,3776512,3645440,3776512
+awk,s,0.01776618564666666,0.009331486452651803,0.012863866920000001,0.01040678142,0.054221122420000004,B,4068065.28,50371.78115379323,4038656,4038656,4182016
+
+$ python3 readback.py
+schema 2 | primary metric: time_wall_clock
+grep: 574 runs, wall mean 1.70 ms, stddev 3.39 ms, median 0.70 ms, peak memory mean 3.6 MiB
+awk: 150 runs, wall mean 17.77 ms, stddev 9.33 ms, median 12.86 ms, peak memory mean 3.9 MiB
